@@ -19,3 +19,35 @@ model User {
   email    String  @unique
   password String
 }
+
+enum ItemType {
+  FRUIT
+  LEGUME
+  DRINK
+  MEAT
+  BAKERY
+}
+
+enum UnitType {
+  KG
+  LITER
+  UNIT
+}
+
+model Item {
+  id          String   @id @default(uuid())
+  name        String
+  category    ItemType
+  quantity    Int
+  unit        UnitType
+
+  shoppingListId String
+  shoppingList ShoppingList @relation(fields: [shoppingListId], references: [id])
+}
+
+model ShoppingList {
+  id        String   @id @default(uuid())
+  name      String
+  items     Item[]
+  createdAt DateTime @default(now())
+}

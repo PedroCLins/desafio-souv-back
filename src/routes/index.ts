@@ -3,12 +3,16 @@ import { Router } from 'express';
 import UserRouter from './UserRoutes';
 import AuthRouter from './AuthRoutes';
 import FileRouter from './FileRoutes';
+import ItemRouter from './itemRoutes';
+import ShoppingListRouter from './shoppingListRoutes';
 
 const router = Router();
 
 router.use('/user', UserRouter);
 router.use('/sessions', AuthRouter);
 router.use('/file', FileRouter);
+router.use('/item', ItemRouter);
+router.use('/shopping-list', ShoppingListRouter);
 router.route('/').get((_, res) => {
   res.status(200).send('Made with 💚 and &lt; &#x0002F; &gt; by CITi');
 });
