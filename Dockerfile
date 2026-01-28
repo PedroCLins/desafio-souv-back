@@ -44,7 +44,7 @@ USER node
 
 EXPOSE 3001
 
-CMD [ "node", "dist/src/server.js" ]
+CMD [ "node", "dist/server.js" ]
 
 # para a documentação seguida para construção desse arquivo, vá para o step 3 do link:
 
