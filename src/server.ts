@@ -4,6 +4,9 @@ import './env';
 import app from './app';
 import '@database';
 
-app.listen(process.env.SERVER_PORT || 3001, () => {
-  console.log(`🚀 Server ready at http://localhost:${process.env.SERVER_PORT || 3001}`);
+const PORT = process.env.PORT || process.env.SERVER_PORT || 3001;
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server ready on port ${PORT}`);
+  console.log('📦 Successfully connected with database');
 });
