@@ -30,10 +30,8 @@ class ItemRepository {
         return item;
     }
 
-    async findByShoppingListId(shoppingListId: string) {
-        const items = await prisma.item.findMany({
-            where: { shoppingListId },
-        });
+    async findAll() {
+        const items = await prisma.item.findMany();
         return items;
     }
 }

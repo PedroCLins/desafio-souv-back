@@ -2,33 +2,82 @@ import { Request, Response, NextFunction } from "express";
 import { ItemRepository } from "@repositories";
 import { CreateItem, UpdateItem } from "@DTOs";
 
+interface Data {
+    name: string;
+    quantity: number;
+    category: "Fruta" | "Legume" | "Padaria" | "Carne" | "Bebida";
+    unit: "Un." | "L" | "Kg";
+}
+
+const categoriesFromClient = {
+    "Fruta": "FRUIT" as const,
+    "Legume": "LEGUME" as const,
+    "Padaria": "BAKERY" as const,
+    "Carne": "MEAT" as const,
+    "Bebida": "DRINK" as const,
+}
+
+const unitsFromClient = {
+    "Un.": "UNIT" as const,
+    "L": "LITER" as const,
+    "Kg": "KG" as const,
+}
+
+const categoriesFromServer = {
+    "FRUIT": "fruta" as const,
+    "LEGUME": "legume" as const,
+    "BAKERY": "padaria" as const,
+    "MEAT": "carne" as const,
+    "DRINK": "bebida" as const,
+}
+
+const unitsFromServer = {
+    "UNIT": "unidade" as const,
+    "LITER": "litro" as const,
+    "KG": "kg" as const,
+}
+
 class ItemController {
     async create(req: Request, res: Response, next: NextFunction) {
         try {
-            const data = CreateItem.parse(req.body);
-            const item = await ItemRepository.create(data);
+            const data: Data = req.body;
+            const formattedData = CreateItem.parse({
+                ...data,
+                category: categoriesFromClient[data.category],
+                unit: unitsFromClient[data.unit],
+            });
+            const item = await ItemRepository.create(formattedData);
             res.locals = {
                 status: 201,
                 message: "Item created successfully",
                 data: item,
             };
+
+            return next();
         } catch (error) {
-            next(error);
+            return next(error);
         }
     }
 
     async update(req: Request, res: Response, next: NextFunction) {
         try {
             const { id }  = req.params;
-            const data = UpdateItem.parse(req.body);
-            const item = await ItemRepository.update(id, data);
+            const data: Partial<Data> = req.body;
+            const formattedData = UpdateItem.parse({
+                ...data,
+                category: data.category ? categoriesFromClient[data.category] : undefined,
+                unit: data.unit ? unitsFromClient[data.unit] : undefined,
+            });
+            const item = await ItemRepository.update(id, formattedData);
             res.locals = {
                 status: 200,
                 message: "Item updated successfully",
                 data: item,
             };
+
+            return next();
         } catch (error) {
-            next(error);
+            return next(error);
         }
     }
 
@@ -40,8 +89,10 @@ class ItemController {
                 status: 204,
                 message: "Item deleted successfully",
             }
+
+            return next()
         } catch (error) {
-            next(error);
+            return next(error);
         }
     }
     
@@ -49,27 +100,40 @@ class ItemController {
         try {
             const { id }  = req.params;
             const item = await ItemRepository.findById(id);
+            const formattedItem = {
+                ...item,
+                category: item ? categoriesFromServer[item.category] : undefined,
+                unit: item ? unitsFromServer[item.unit] : undefined,
+            }
             res.locals = {
                 status: 200,
                 message: "Item retrieved successfully",
-                data: item,
+                data: formattedItem,
             };
+
+            return next();
         } catch (error) {
-            next(error);
+            return next(error);
         }
     }
 
-    async findByShoppingListId(req: Request, res: Response, next: NextFunction) {
+    async findAll(req: Request, res: Response, next: NextFunction) {
         try {
-            const { shoppingListId }  = req.params;
-            const items = await ItemRepository.findByShoppingListId(shoppingListId);
+            const items = await ItemRepository.findAll();
+            const formattedItems = items.map(item => ({
+                ...item,
+                category: categoriesFromServer[item.category],
+                unit: unitsFromServer[item.unit],
+            }));
             res.locals = {
                 status: 200,
                 message: "Items retrieved successfully",
-                data: items,
+                data: formattedItems,
             };
+
+            return next();
         } catch (error) {
-            next(error);
+            return next(error);
         }
     }
 }

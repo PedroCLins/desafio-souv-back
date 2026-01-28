@@ -28,8 +28,8 @@ expressWinston.responseWhitelist.push('body');
 app.use(routes);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use(errorHandler);
 app.use(requestHandler);
+app.use(errorHandler);
 app.use(expressWinston.errorLogger({ winstonInstance: requestLogger }));
 
 export default app;

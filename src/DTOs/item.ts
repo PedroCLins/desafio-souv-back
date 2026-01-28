@@ -5,6 +5,11 @@ const ItemType = z.enum(["FRUIT", "LEGUME", "DRINK", "MEAT", "BAKERY"], {
     required_error: "O tipo do item é obrigatório",
 });
 
+const UnitType = z.enum(["KG", "UNIT", "LITER"], {
+    invalid_type_error: "A unidade do item é inválida",
+    required_error: "A unidade do item é obrigatória",
+});
+
 export const CreateItem = z.object({
     name: z
         .string({
@@ -20,12 +25,7 @@ export const CreateItem = z.object({
         })
         .int({ message: "A quantidade deve ser um número inteiro" })
         .nonnegative({ message: "A quantidade não pode ser negativa" }),
-    shoppingListId: z
-        .string({
-            invalid_type_error: "O ID da lista de compras deve ser uma string",
-            required_error: "O ID da lista de compras é obrigatório",
-        })
-        .uuid({ message: "O ID da lista de compras deve ser um UUID válido" }),
+    unit: UnitType,
 });
 
 export const UpdateItem = CreateItem.partial();

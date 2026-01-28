@@ -40,14 +40,4 @@ model Item {
   category    ItemType
   quantity    Int
   unit        UnitType
-
-  shoppingListId String
-  shoppingList ShoppingList @relation(fields: [shoppingListId], references: [id])
-}
-
-model ShoppingList {
-  id        String   @id @default(uuid())
-  name      String
-  items     Item[]
-  createdAt DateTime @default(now())
 }
