@@ -19,3 +19,25 @@ model User {
   email    String  @unique
   password String
 }
+
+enum ItemType {
+  FRUIT
+  LEGUME
+  DRINK
+  MEAT
+  BAKERY
+}
+
+enum UnitType {
+  KG
+  LITER
+  UNIT
+}
+
+model Item {
+  id          String   @id @default(uuid())
+  name        String
+  category    ItemType
+  quantity    Int
+  unit        UnitType
+}
