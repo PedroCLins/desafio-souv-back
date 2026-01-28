@@ -7,7 +7,7 @@
 2. Clone o repositório:
 
 ```bash
-git clone https://github.com/CITi-UFPE/node-boilerplate.git
+git clone https://github.com/PedroCLins/desafio-souv-back.git
 ```
 
 3. Instale as dependências:
@@ -20,7 +20,7 @@ pnpm install
 
 ```dotenv
 # ###### GENERAL SETTINGS #######
-PROJECT_NAME=boilerplate
+PROJECT_NAME=desafio-souv
 
 # ###### SERVER SETTINGS #######
 SERVER_PORT=3001
@@ -39,7 +39,7 @@ DATABASE_TEST_HOST=localhost
 DATABASE_TEST_PORT=5433
 DATABASE_TEST_USER=postgres
 DATABASE_TEST_PASSWORD=docker
-DATABASE_TEST_DB=boilerplate-test
+DATABASE_TEST_DB=desafio-souv-test
 
 DATABASE_URL=${DATABASE_TYPE}://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_DB}
 
@@ -49,7 +49,7 @@ JWT_REFRESH_SECRET=92fba49f6912d14733332bb9ebaac1562f51ee685594acf103d71f685f708
 
 # ###### S3 SETTINGS FOR FILE UPLOADS #######
 S3_ENDPOINT=XXXXXX.digitaloceanspaces.com
-S3_BUCKET=exemplo-bucket
+S3_BUCKET=desafio-souv-bucket
 S3_KEY=
 S3_SECRET=
 ```
